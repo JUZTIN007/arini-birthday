@@ -3,61 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Arini!</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
-            color: #333;
-            text-align: center;
-        }
-        nav {
-            margin: 20px 0;
-        }
-        nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: #007bff;
-        }
-        .countdown {
-            font-size: 2em;
-            font-weight: bold;
-            margin: 20px 0;
-        }
-    </style>
+    <title>Happy Birthday De ✈️💝</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Happy Birthday Arini!</h1>
-    <p>Welcome to your romantic aviation-themed birthday celebration!</p>
-    <nav>
-        <a href="#quiz">Quiz</a>
-        <a href="#games">Games</a>
-    </nav>
-    <div class="countdown">
-        <h2>Countdown to April 25th:</h2>
-        <p id="timer"></p>
-    </div>
+    <div id="hearts-container"></div>
     
-    <script>
-        const countDownDate = new Date("April 25, 2026 00:00:00").getTime();
-        
-        const x = setInterval(function() {
-            const now = new Date().getTime();
-            const distance = countDownDate - now;
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">✈️ De's Flight 💝</h1>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#countdown" class="nav-link">Countdown</a></li>
+                <li><a href="#memories" class="nav-link">Memories</a></li>
+                <li><a href="#games" class="nav-link">Play</a></li>
+            </ul>
+        </div>
+    </nav>
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="main-title">Happy Birthday De 💋</h1>
+            <p class="subtitle">My Beautiful Black Lover</p>
+            <p class="tagline">✈️ A Journey Through Our Beautiful Moments ✈️</p>
+            <div class="interactive-hearts">💕 💕 💕</div>
+            <button class="cta-button" onclick="document.getElementById('countdown').scrollIntoView({behavior: 'smooth'})">Start The Adventure 🚀</button>
+            <p class="hero-message">Click anywhere to see the magic ✨</p>
+        </div>
+        <div class="floating-plane">✈️</div>
+    </section>
 
-            document.getElementById("timer").innerHTML = days + "d " + hours + "h " +
-            minutes + "m " + seconds + "s ";
+    <section id="countdown" class="countdown-section">
+        <h2>Days Until De's Birthday 🎂</h2>
+        <div class="countdown-timer">
+            <div class="time-unit">
+                <span id="days" class="time-value">00</span>
+                <p class="time-label">Days</p>
+            </div>
+            <div class="time-unit">
+                <span id="hours" class="time-value">00</span>
+                <p class="time-label">Hours</p>
+            </div>
+            <div class="time-unit">
+                <span id="minutes" class="time-value">00</span>
+                <p class="time-label">Minutes</p>
+            </div>
+            <div class="time-unit">
+                <span id="seconds" class="time-value">00</span>
+                <p class="time-label">Seconds</p>
+            </div>
+        </div>
+        <p class="countdown-message">Every second with you is a gift 💝</p>
+    </section>
 
-            if (distance < 0) {
-                clearInterval(x);
-                document.getElementById("timer").innerHTML = "EXPIRED";
-            }
-        }, 1000);
-    </script>
+    <section id="memories" class="memories-section">
+        <h2>Our Beautiful Moments 💕</h2>
+        <div class="memories-grid">
+            <div class="memory-card">
+                <div class="memory-icon">🏍️</div>
+                <h3>Midnight Bike Rides</h3>
+                <p>Racing through the night with you, feeling the wind and your warmth...</p>
+            </div>
+            <div class="memory-card">
+                <div class="memory-icon">🍽️</div>
+                <h3>Candlelit Dinners</h3>
+                <p>Those beautiful night dinners where time stops and it's just us...</p>
+            </div>
+            <div class="memory-card">
+                <div class="memory-icon">😊</div>
+                <h3>Your Cute Chaos</h3>
+                <p>Your childish, adorable moments that make me smile endlessly...</p>
+            </div>
+            <div class="memory-card">
+                <div class="memory-icon">🖤</div>
+                <h3>Every Moment Together</h3>
+                <p>The simple acts of being together mean everything...</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="games" class="games-section">
+        <h2>Let's Play 🎮</h2>
+        <div class="games-menu" id="gamesMenu">
+            <button class="game-card" onclick="startMemoryGame()">
+                <span class="game-icon">🧩</span>
+                <h3>Memory Match</h3>
+                <p>Find the matching pairs!</p>
+            </button>
+            <button class="game-card" onclick="startQuiz()">
+                <span class="game-icon">❓</span>
+                <h3>Relationship Quiz</h3>
+                <p>How well do you know us?</p>
+            </button>
+            <button class="game-card" onclick="startRomanticGame()">
+                <span class="game-icon">💕</span>
+                <h3>Romantic Spinner</h3>
+                <p>Spin for a surprise!</p>
+            </button>
+        </div>
+
+        <div id="memoryGameContainer" class="hidden">
+            <h3>Memory Match Game 💕</h3>
+            <div id="memoryGrid" class="memory-game-grid"></div>
+            <button class="back-button" onclick="closeMemoryGame()">Back</button>
+        </div>
+
+        <div id="quizContainer" class="hidden">
+            <h3>Relationship Quiz</h3>
+            <div id="quizContent"></div>
+            <button id="quizButton" class="quiz-button" onclick="nextQuestion()">Next</button>
+            <button class="back-button" onclick="closeQuiz()">Back</button>
+        </div>
+
+        <div id="romanticGameContainer" class="hidden">
+            <h3>Spin The Wheel 💕</h3>
+            <div class="spinner-container">
+                <div id="spinner" class="spinner">
+                    <div class="spinner-item">💋 Kiss Me</div>
+                    <div class="spinner-item">🌹 Roses</div>
+                    <div class="spinner-item">🎵 Dance</div>
+                    <div class="spinner-item">🏍️ Ride</div>
+                    <div class="spinner-item">🍽️ Dinner</div>
+                    <div class="spinner-item">🌙 Night</div>
+                </div>
+                <button class="spin-button" onclick="spinWheel()">SPIN! 💕</button>
+            </div>
+            <p id="spinResult" class="spin-result"></p>
+            <button class="back-button" onclick="closeRomanticGame()">Back</button>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>Made with 💖 for De • April 25th • Forever Yours ✈️</p>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
