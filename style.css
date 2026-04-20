@@ -1,0 +1,475 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-black: #1a1a1a;
+    --secondary-black: #2d2d2d;
+    --gold: #d4af37;
+    --rose-gold: #b76e79;
+    --light-gold: #e8d5b7;
+    --white: #f5f5f5;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--primary-black) 0%, var(--secondary-black) 100%);
+    color: var(--white);
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* Navbar */
+.navbar {
+    background: rgba(26, 26, 26, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 2px solid var(--gold);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.logo {
+    font-size: 1.8rem;
+    color: var(--gold);
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-link {
+    color: var(--white);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--gold);
+}
+
+/* Hero Section */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    text-align: center;
+    z-index: 10;
+    animation: fadeInDown 1s ease;
+}
+
+.main-title {
+    font-size: 4rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+    animation: glow 2s ease-in-out infinite;
+}
+
+.subtitle {
+    font-size: 2rem;
+    color: var(--rose-gold);
+    margin-bottom: 1rem;
+}
+
+.tagline {
+    font-size: 1.3rem;
+    color: var(--light-gold);
+    margin-bottom: 2rem;
+}
+
+.cta-button {
+    background: linear-gradient(135deg, var(--gold), var(--rose-gold));
+    color: var(--primary-black);
+    border: none;
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.5);
+}
+
+.floating-plane {
+    position: absolute;
+    font-size: 5rem;
+    animation: float 6s ease-in-out infinite;
+    opacity: 0.3;
+}
+
+.interactive-hearts {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    animation: bounce 1.5s ease-in-out infinite;
+}
+
+.hero-message {
+    color: var(--rose-gold);
+    font-size: 1rem;
+    margin-top: 1rem;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) translateX(0px); }
+    50% { transform: translateY(-50px) translateX(30px); }
+}
+
+@keyframes glow {
+    0%, 100% { text-shadow: 0 0 20px rgba(212, 175, 55, 0.6); }
+    50% { text-shadow: 0 0 30px rgba(212, 175, 55, 0.9); }
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes float-down {
+    to { transform: translateY(100vh) translateX(100px); opacity: 0; }
+}
+
+@keyframes burst {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(0); opacity: 0; }
+}
+
+/* Countdown Section */
+.countdown-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, var(--secondary-black) 0%, var(--primary-black) 100%);
+    text-align: center;
+}
+
+.countdown-section h2 {
+    font-size: 2.5rem;
+    color: var(--gold);
+    margin-bottom: 3rem;
+}
+
+.countdown-timer {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.time-unit {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(183, 110, 121, 0.1));
+    border: 2px solid var(--gold);
+    border-radius: 15px;
+    padding: 2rem;
+    min-width: 120px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.time-value {
+    display: block;
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--gold);
+}
+
+.time-label {
+    color: var(--light-gold);
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.countdown-message {
+    color: var(--rose-gold);
+    font-size: 1.2rem;
+    margin-top: 2rem;
+}
+
+/* Memories Section */
+.memories-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, var(--primary-black) 0%, var(--secondary-black) 100%);
+}
+
+.memories-section h2 {
+    font-size: 2.5rem;
+    color: var(--rose-gold);
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.memories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.memory-card {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(183, 110, 121, 0.05));
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.memory-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--gold);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+}
+
+.memory-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.memory-card h3 {
+    color: var(--gold);
+    margin-bottom: 1rem;
+}
+
+.memory-card p {
+    color: var(--light-gold);
+    font-size: 0.95rem;
+}
+
+/* Games Section */
+.games-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, var(--primary-black) 0%, var(--secondary-black) 100%);
+}
+
+.games-section h2 {
+    font-size: 2.5rem;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.games-menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.game-card {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(183, 110, 121, 0.1));
+    border: 2px solid var(--gold);
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--white);
+}
+
+.game-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+    border-color: var(--rose-gold);
+}
+
+.game-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.game-card h3 {
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+}
+
+.game-card p {
+    color: var(--light-gold);
+    font-size: 0.9rem;
+}
+
+/* Memory Game */
+.memory-game-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    max-width: 400px;
+    margin: 2rem auto;
+}
+
+.memory-card-game {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--gold), var(--rose-gold));
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 2rem;
+    transition: all 0.3s ease;
+}
+
+.memory-card-game:hover {
+    transform: scale(1.05);
+}
+
+/* Spinner */
+.spinner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.spinner {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.spinner-item {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #1a1a1a;
+    font-size: 1.2rem;
+}
+
+.spinner-item:nth-child(1) { background: #d4af37; transform: rotate(0deg) translateY(-150px); }
+.spinner-item:nth-child(2) { background: #b76e79; transform: rotate(60deg) translateY(-150px); }
+.spinner-item:nth-child(3) { background: #d4af37; transform: rotate(120deg) translateY(-150px); }
+.spinner-item:nth-child(4) { background: #b76e79; transform: rotate(180deg) translateY(-150px); }
+.spinner-item:nth-child(5) { background: #d4af37; transform: rotate(240deg) translateY(-150px); }
+.spinner-item:nth-child(6) { background: #b76e79; transform: rotate(300deg) translateY(-150px); }
+
+.spin-button {
+    background: linear-gradient(135deg, var(--gold), var(--rose-gold));
+    color: #1a1a1a;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.spin-button:hover {
+    transform: scale(1.1);
+}
+
+.spin-result {
+    font-size: 1.5rem;
+    color: var(--gold);
+    text-align: center;
+    min-height: 2rem;
+}
+
+/* Quiz */
+.quiz-button {
+    background: linear-gradient(135deg, var(--gold), var(--rose-gold));
+    color: var(--primary-black);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.quiz-button:hover {
+    transform: scale(1.05);
+}
+
+.back-button {
+    background: var(--rose-gold);
+    color: var(--white);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.back-button:hover {
+    transform: scale(1.05);
+}
+
+.hidden {
+    display: none;
+}
+
+/* Footer */
+.footer {
+    background: var(--primary-black);
+    border-top: 2px solid var(--gold);
+    padding: 2rem;
+    text-align: center;
+    color: var(--light-gold);
+}
+
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 2.5rem;
+    }
+    .memory-game-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .memory-card-game {
+        width: 60px;
+        height: 60px;
+    }
+}
