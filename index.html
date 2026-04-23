@@ -2,141 +2,131 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday De ✈️💝</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>For Her 🌸</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:ital@1&display=swap');
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: #0a0a0a; color: #fff;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; font-family: 'Playfair Display', serif;
+        }
+
+        #overlay {
+            position: absolute; z-index: 100; text-align: center; cursor: pointer;
+            transition: opacity 1s ease;
+        }
+
+        #overlay h2 { font-size: 1.5rem; letter-spacing: 5px; animation: pulse 2s infinite; }
+
+        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+        .content { position: relative; width: 100vw; height: 100vh; display: none; }
+
+        #quote-container {
+            position: absolute; left: 10%; top: 40%; transform: translateY(-50%);
+            width: 35%; font-size: 1.8rem; line-height: 1.6; font-style: italic;
+        }
+
+        #canvas { position: absolute; right: 0; bottom: 0; }
+
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
-    <div id="hearts-container"></div>
-    
-    <nav class="navbar">
-        <div class="nav-container">
-            <h1 class="logo">✈️ De's Flight 💝</h1>
-            <ul class="nav-menu">
-                <li><a href="#home" class="nav-link active">Home</a></li>
-                <li><a href="#countdown" class="nav-link">Countdown</a></li>
-                <li><a href="#memories" class="nav-link">Memories</a></li>
-                <li><a href="#games" class="nav-link">Play</a></li>
-            </ul>
-        </div>
-    </nav>
 
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1 class="main-title">Happy Birthday De 💋</h1>
-            <p class="subtitle">My Beautiful Black Lover</p>
-            <p class="tagline">✈️ A Journey Through Our Beautiful Moments ✈️</p>
-            <div class="interactive-hearts">💕 💕 💕</div>
-            <button class="cta-button" onclick="document.getElementById('countdown').scrollIntoView({behavior: 'smooth'})">Start The Adventure 🚀</button>
-            <p class="hero-message">Click anywhere to see the magic ✨</p>
-        </div>
-        <div class="floating-plane">✈️</div>
-    </section>
+    <div id="overlay" onclick="startExperience()">
+        <h2>[ CLICK TO BLOOM ]</h2>
+    </div>
 
-    <section id="countdown" class="countdown-section">
-        <h2>Days Until De's Birthday 🎂</h2>
-        <div class="countdown-timer">
-            <div class="time-unit">
-                <span id="days" class="time-value">00</span>
-                <p class="time-label">Days</p>
-            </div>
-            <div class="time-unit">
-                <span id="hours" class="time-value">00</span>
-                <p class="time-label">Hours</p>
-            </div>
-            <div class="time-unit">
-                <span id="minutes" class="time-value">00</span>
-                <p class="time-label">Minutes</p>
-            </div>
-            <div class="time-unit">
-                <span id="seconds" class="time-value">00</span>
-                <p class="time-label">Seconds</p>
-            </div>
-        </div>
-        <p class="countdown-message">Every second with you is a gift 💝</p>
-    </section>
+    <div class="content" id="main-content">
+        <div id="quote-container"></div>
+        <canvas id="canvas"></canvas>
+    </div>
 
-    <section id="memories" class="memories-section">
-        <h2>Our Beautiful Moments 💕</h2>
-        <div class="memories-grid">
-            <div class="memory-card">
-                <div class="memory-icon">🏍️</div>
-                <h3>Midnight Bike Rides</h3>
-                <p>Racing through the night with you, feeling the wind and your warmth...</p>
-            </div>
-            <div class="memory-card">
-                <div class="memory-icon">🍽️</div>
-                <h3>Candlelit Dinners</h3>
-                <p>Those beautiful night dinners where time stops and it's just us...</p>
-            </div>
-            <div class="memory-card">
-                <div class="memory-icon">😊</div>
-                <h3>Your Cute Chaos</h3>
-                <p>Your childish, adorable moments that make me smile endlessly...</p>
-            </div>
-            <div class="memory-card">
-                <div class="memory-icon">🖤</div>
-                <h3>Every Moment Together</h3>
-                <p>The simple acts of being together mean everything...</p>
-            </div>
-        </div>
-    </section>
+    <script>
+        const quotes = [
+            "In the garden of time...",
+            "One soul bloomed brighter than the rest.",
+            "A cosmic accident? Or destiny's art?",
+            "Today, the stars celebrate you.",
+            "Happy Birthday, My Constant. ✨"
+        ];
 
-    <section id="games" class="games-section">
-        <h2>Let's Play 🎮</h2>
-        <div class="games-menu" id="gamesMenu">
-            <button class="game-card" onclick="startMemoryGame()">
-                <span class="game-icon">🧩</span>
-                <h3>Memory Match</h3>
-                <p>Find the matching pairs!</p>
-            </button>
-            <button class="game-card" onclick="startQuiz()">
-                <span class="game-icon">❓</span>
-                <h3>Relationship Quiz</h3>
-                <p>How well do you know us?</p>
-            </button>
-            <button class="game-card" onclick="startRomanticGame()">
-                <span class="game-icon">💕</span>
-                <h3>Romantic Spinner</h3>
-                <p>Spin for a surprise!</p>
-            </button>
-        </div>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let animationStarted = false;
 
-        <div id="memoryGameContainer" class="hidden">
-            <h3>Memory Match Game 💕</h3>
-            <div id="memoryGrid" class="memory-game-grid"></div>
-            <button class="back-button" onclick="closeMemoryGame()">Back</button>
-        </div>
+        function startExperience() {
+            document.getElementById('overlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('overlay').classList.add('hidden');
+                document.getElementById('main-content').style.display = 'block';
+                initTree();
+                typeQuotes();
+            }, 1000);
+        }
 
-        <div id="quizContainer" class="hidden">
-            <h3>Relationship Quiz</h3>
-            <div id="quizContent"></div>
-            <button id="quizButton" class="quiz-button" onclick="nextQuestion()">Next</button>
-            <button class="back-button" onclick="closeQuiz()">Back</button>
-        </div>
+        // --- Typewriter Logic ---
+        async function typeQuotes() {
+            const container = document.getElementById('quote-container');
+            for (let quote of quotes) {
+                let i = 0;
+                let span = document.createElement('p');
+                container.appendChild(span);
+                while (i < quote.length) {
+                    span.innerHTML += quote.charAt(i);
+                    i++;
+                    await new Promise(r => setTimeout(r, 70));
+                }
+                await new Promise(r => setTimeout(r, 1500));
+                if (quote !== quotes[quotes.length -1]) span.style.opacity = '0.5';
+            }
+        }
 
-        <div id="romanticGameContainer" class="hidden">
-            <h3>Spin The Wheel 💕</h3>
-            <div class="spinner-container">
-                <div id="spinner" class="spinner">
-                    <div class="spinner-item">💋 Kiss Me</div>
-                    <div class="spinner-item">🌹 Roses</div>
-                    <div class="spinner-item">🎵 Dance</div>
-                    <div class="spinner-item">🏍️ Ride</div>
-                    <div class="spinner-item">🍽️ Dinner</div>
-                    <div class="spinner-item">🌙 Night</div>
-                </div>
-                <button class="spin-button" onclick="spinWheel()">SPIN! 💕</button>
-            </div>
-            <p id="spinResult" class="spin-result"></p>
-            <button class="back-button" onclick="closeRomanticGame()">Back</button>
-        </div>
-    </section>
+        // --- Tree Growth Logic ---
+        function initTree() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            // Drawing the tree at the bottom right
+            drawBranch(canvas.width * 0.75, canvas.height, -90, 10, 120);
+        }
 
-    <footer class="footer">
-        <p>Made with 💖 for De • April 25th • Forever Yours ✈️</p>
-    </footer>
+        function drawBranch(x, y, angle, thickness, len) {
+            if (len < 10) {
+                drawHeart(x, y);
+                return;
+            }
 
-    <script src="script.js"></script>
+            ctx.beginPath();
+            ctx.save();
+            ctx.strokeStyle = "#4a2c2a";
+            ctx.lineWidth = thickness;
+            ctx.translate(x, y);
+            ctx.rotate(angle * Math.PI / 180);
+            ctx.moveTo(0, 0);
+            ctx.lineTo(0, -len);
+            ctx.stroke();
+
+            setTimeout(() => {
+                drawBranch(0, -len, angle + (Math.random() * 25), thickness * 0.8, len * 0.8);
+                drawBranch(0, -len, angle - (Math.random() * 25), thickness * 0.8, len * 0.8);
+            }, 100);
+            ctx.restore();
+        }
+
+        function drawHeart(x, y) {
+            ctx.fillStyle = `hsla(${Math.random() * 20 + 340}, 80%, 70%, 0.8)`;
+            ctx.beginPath();
+            const size = Math.random() * 8 + 4;
+            ctx.moveTo(x, y);
+            ctx.bezierCurveTo(x, y - size/2, x - size, y - size/2, x - size, y);
+            ctx.bezierCurveTo(x - size, y + size/2, x, y + size, x, y + size);
+            ctx.bezierCurveTo(x, y + size, x + size, y + size/2, x + size, y);
+            ctx.bezierCurveTo(x + size, y - size/2, x, y - size/2, x, y);
+            ctx.fill();
+        }
+    </script>
 </body>
 </html>
