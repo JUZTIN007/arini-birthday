@@ -2,42 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>For Her 🌸</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Small Wish ✨</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:ital@1&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,500&family=Quicksand:wght@300;400&display=swap');
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            background-color: #0a0a0a; color: #fff;
+            background-color: #0d0d0d; color: #e0e0e0;
             display: flex; justify-content: center; align-items: center;
-            overflow: hidden; font-family: 'Playfair Display', serif;
+            overflow: hidden; font-family: 'Quicksand', sans-serif;
         }
 
+        /* Initial Screen */
         #overlay {
             position: absolute; z-index: 100; text-align: center; cursor: pointer;
             transition: opacity 1s ease;
         }
 
-        #overlay h2 { font-size: 1.5rem; letter-spacing: 5px; animation: pulse 2s infinite; }
+        #overlay h2 { 
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem; font-weight: 300; letter-spacing: 5px; color: #aaa;
+            animation: pulse 2.5s infinite; 
+        }
 
-        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+        @keyframes pulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
 
+        /* Main Content Layout */
         .content { position: relative; width: 100vw; height: 100vh; display: none; }
 
         #quote-container {
-            position: absolute; left: 10%; top: 40%; transform: translateY(-50%);
-            width: 35%; font-size: 1.8rem; line-height: 1.6; font-style: italic;
+            position: absolute; 
+            left: 50%; top: 25%; 
+            transform: translateX(-50%);
+            width: 85%; text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem; line-height: 1.8; font-style: italic;
+            z-index: 10;
         }
 
-        #canvas { position: absolute; right: 0; bottom: 0; }
+        #canvas { position: absolute; bottom: 0; left: 0; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); }
 
         .hidden { display: none; }
+
+        p { margin-bottom: 15px; transition: opacity 1.5s ease; }
     </style>
 </head>
 <body>
 
     <div id="overlay" onclick="startExperience()">
-        <h2>[ CLICK TO BLOOM ]</h2>
+        <h2>[ TAP TO BEGIN ]</h2>
     </div>
 
     <div class="content" id="main-content">
@@ -46,26 +60,34 @@
     </div>
 
     <script>
+        // --- Poetic & Classy Quotes ---
         const quotes = [
-            "In the garden of time...",
-            "One soul bloomed brighter than the rest.",
-            "A cosmic accident? Or destiny's art?",
-            "Today, the stars celebrate you.",
-            "Happy Birthday, My Constant. ✨"
+            "Hey you !!",
+            "There is a certain light in your smile...",
+            "A quiet kind of healing that makes the world feel right.",
+            "Your presence has that same magic—calm and rare.",
+            "It’s strange how hours feel like seconds when we talk...",
+            "But then again, gems like you are once-in-a-lifetime.",
+            "Happy Birthday! Keep being your wonderful self. ✨"
         ];
 
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        let animationStarted = false;
-
+        
         function startExperience() {
             document.getElementById('overlay').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('overlay').classList.add('hidden');
                 document.getElementById('main-content').style.display = 'block';
-                initTree();
+                resize();
+                drawTree();
                 typeQuotes();
-            }, 1000);
+            }, 800);
+        }
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
 
         // --- Typewriter Logic ---
@@ -73,60 +95,78 @@
             const container = document.getElementById('quote-container');
             for (let quote of quotes) {
                 let i = 0;
-                let span = document.createElement('p');
-                container.appendChild(span);
+                let p = document.createElement('p');
+                container.appendChild(p);
+                
                 while (i < quote.length) {
-                    span.innerHTML += quote.charAt(i);
+                    p.innerHTML += quote.charAt(i);
                     i++;
-                    await new Promise(r => setTimeout(r, 70));
+                    await new Promise(r => setTimeout(r, 55)); // Typing speed
                 }
-                await new Promise(r => setTimeout(r, 1500));
-                if (quote !== quotes[quotes.length -1]) span.style.opacity = '0.5';
+                
+                await new Promise(r => setTimeout(r, 2000)); // Pause between lines
+                
+                // Fade out old lines slightly to keep focus on new ones
+                if (quote !== quotes[quotes.length -1]) {
+                    p.style.opacity = '0.3';
+                }
             }
         }
 
         // --- Tree Growth Logic ---
-        function initTree() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            // Drawing the tree at the bottom right
-            drawBranch(canvas.width * 0.75, canvas.height, -90, 10, 120);
+        function drawTree() {
+            const startX = canvas.width / 2;
+            const startY = canvas.height - 30; 
+            const trunkHeight = canvas.height * 0.22;
+            
+            // Using a soft grey/silver for a poetic "Night Garden" look
+            branch(startX, startY, trunkHeight, -90, 10);
         }
 
-        function drawBranch(x, y, angle, thickness, len) {
-            if (len < 10) {
-                drawHeart(x, y);
-                return;
-            }
-
+        function branch(x, y, len, angle, thickness) {
             ctx.beginPath();
             ctx.save();
-            ctx.strokeStyle = "#4a2c2a";
+            ctx.strokeStyle = "#444"; // Muted branch color
             ctx.lineWidth = thickness;
+            ctx.lineCap = "round";
             ctx.translate(x, y);
             ctx.rotate(angle * Math.PI / 180);
             ctx.moveTo(0, 0);
             ctx.lineTo(0, -len);
             ctx.stroke();
 
+            if (len < 12) {
+                // Bloom soft glowing petals/hearts
+                for(let i=0; i<4; i++) {
+                    setTimeout(() => drawPetal(0, -len), Math.random() * 2000);
+                }
+                ctx.restore();
+                return;
+            }
+
+            // Recursive branching with slight randomness
             setTimeout(() => {
-                drawBranch(0, -len, angle + (Math.random() * 25), thickness * 0.8, len * 0.8);
-                drawBranch(0, -len, angle - (Math.random() * 25), thickness * 0.8, len * 0.8);
-            }, 100);
+                branch(0, -len, len * 0.78, angle + (Math.random() * 25 + 10), thickness * 0.7);
+                branch(0, -len, len * 0.78, angle - (Math.random() * 25 + 10), thickness * 0.7);
+            }, 200);
+
             ctx.restore();
         }
 
-        function drawHeart(x, y) {
-            ctx.fillStyle = `hsla(${Math.random() * 20 + 340}, 80%, 70%, 0.8)`;
+        function drawPetal(x, y) {
+            const size = Math.random() * 5 + 3;
+            // Soft white/gold glow instead of bright pink
+            ctx.fillStyle = `hsla(${Math.random() * 40 + 20}, 30%, 90%, 0.7)`;
             ctx.beginPath();
-            const size = Math.random() * 8 + 4;
-            ctx.moveTo(x, y);
-            ctx.bezierCurveTo(x, y - size/2, x - size, y - size/2, x - size, y);
-            ctx.bezierCurveTo(x - size, y + size/2, x, y + size, x, y + size);
-            ctx.bezierCurveTo(x, y + size, x + size, y + size/2, x + size, y);
-            ctx.bezierCurveTo(x + size, y - size/2, x, y - size/2, x, y);
+            ctx.save();
+            // Scatter petals around branch ends
+            ctx.translate(x + (Math.random()-0.5)*50, y + (Math.random()-0.5)*50);
+            ctx.arc(0, 0, size, 0, Math.PI * 2);
             ctx.fill();
+            ctx.restore();
         }
+
+        window.addEventListener('resize', resize);
     </script>
 </body>
 </html>
