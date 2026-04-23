@@ -3,64 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Small Wish ✨</title>
+    <title>For You ✨</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,500&family=Quicksand:wght@300;400&display=swap');
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            background-color: #0d0d0d; color: #e0e0e0;
+            background-color: #080808; color: #fff;
             display: flex; justify-content: center; align-items: center;
             overflow: hidden; font-family: 'Quicksand', sans-serif;
         }
 
-        /* Initial Screen */
         #overlay {
             position: absolute; z-index: 100; text-align: center; cursor: pointer;
-            transition: opacity 1s ease;
+            width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;
+            background: #080808;
         }
 
         #overlay h2 { 
-            font-family: 'Playfair Display', serif;
-            font-size: 1.1rem; font-weight: 300; letter-spacing: 5px; color: #aaa;
-            animation: pulse 2.5s infinite; 
+            font-family: 'Playfair Display', serif; font-size: 1rem;
+            letter-spacing: 5px; color: #888; animation: pulse 2s infinite; 
         }
 
-        @keyframes pulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
-
-        /* Main Content Layout */
-        .content { position: relative; width: 100vw; height: 100vh; display: none; }
+        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
         #quote-container {
-            position: absolute; 
-            left: 50%; top: 25%; 
-            transform: translateX(-50%);
-            width: 85%; text-align: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem; line-height: 1.8; font-style: italic;
-            z-index: 10;
+            position: absolute; left: 50%; top: 20%; transform: translateX(-50%);
+            width: 85%; text-align: center; font-family: 'Playfair Display', serif;
+            font-size: 1.3rem; line-height: 1.6; font-style: italic; z-index: 10;
         }
 
-        #canvas { position: absolute; bottom: 0; left: 0; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); }
-
-        .hidden { display: none; }
-
-        p { margin-bottom: 15px; transition: opacity 1.5s ease; }
+        canvas { position: absolute; bottom: 0; left: 0; pointer-events: none; }
+        p { margin-bottom: 12px; transition: opacity 1s; }
     </style>
 </head>
 <body>
 
     <div id="overlay" onclick="startExperience()">
-        <h2>[ TAP TO BEGIN ]</h2>
+        <h2>[ TAP TO BLOOM ]</h2>
     </div>
 
-    <div class="content" id="main-content">
-        <div id="quote-container"></div>
-        <canvas id="canvas"></canvas>
-    </div>
+    <div id="quote-container"></div>
+    <canvas id="canvas"></canvas>
 
     <script>
-        // --- Poetic & Classy Quotes ---
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('quote-container');
+
         const quotes = [
             "Hey you !!",
             "There is a certain light in your smile...",
@@ -71,102 +61,70 @@
             "Happy Birthday! Keep being your wonderful self. ✨"
         ];
 
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        
-        function startExperience() {
-            document.getElementById('overlay').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('overlay').classList.add('hidden');
-                document.getElementById('main-content').style.display = 'block';
-                resize();
-                drawTree();
-                typeQuotes();
-            }, 800);
-        }
-
         function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
 
-        // --- Typewriter Logic ---
-        async function typeQuotes() {
-            const container = document.getElementById('quote-container');
-            for (let quote of quotes) {
-                let i = 0;
-                let p = document.createElement('p');
-                container.appendChild(p);
-                
-                while (i < quote.length) {
-                    p.innerHTML += quote.charAt(i);
-                    i++;
-                    await new Promise(r => setTimeout(r, 55)); // Typing speed
-                }
-                
-                await new Promise(r => setTimeout(r, 2000)); // Pause between lines
-                
-                // Fade out old lines slightly to keep focus on new ones
-                if (quote !== quotes[quotes.length -1]) {
-                    p.style.opacity = '0.3';
-                }
-            }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function startExperience() {
+            document.getElementById('overlay').style.display = 'none';
+            drawTree(canvas.width / 2, canvas.height - 20, -90, 9, canvas.height * 0.2);
+            typeQuotes();
         }
 
-        // --- Tree Growth Logic ---
-        function drawTree() {
-            const startX = canvas.width / 2;
-            const startY = canvas.height - 30; 
-            const trunkHeight = canvas.height * 0.22;
-            
-            // Using a soft grey/silver for a poetic "Night Garden" look
-            branch(startX, startY, trunkHeight, -90, 10);
-        }
-
-        function branch(x, y, len, angle, thickness) {
-            ctx.beginPath();
-            ctx.save();
-            ctx.strokeStyle = "#444"; // Muted branch color
-            ctx.lineWidth = thickness;
-            ctx.lineCap = "round";
-            ctx.translate(x, y);
-            ctx.rotate(angle * Math.PI / 180);
-            ctx.moveTo(0, 0);
-            ctx.lineTo(0, -len);
-            ctx.stroke();
-
-            if (len < 12) {
-                // Bloom soft glowing petals/hearts
-                for(let i=0; i<4; i++) {
-                    setTimeout(() => drawPetal(0, -len), Math.random() * 2000);
-                }
-                ctx.restore();
+        // --- Tree Growth Function ---
+        function drawTree(x1, y1, angle, thickness, len) {
+            if (len < 8) {
+                drawBloom(x1, y1);
                 return;
             }
 
-            // Recursive branching with slight randomness
-            setTimeout(() => {
-                branch(0, -len, len * 0.78, angle + (Math.random() * 25 + 10), thickness * 0.7);
-                branch(0, -len, len * 0.78, angle - (Math.random() * 25 + 10), thickness * 0.7);
-            }, 200);
+            const x2 = x1 + Math.cos(angle * Math.PI / 180) * len;
+            const y2 = y1 + Math.sin(angle * Math.PI / 180) * len;
 
-            ctx.restore();
-        }
-
-        function drawPetal(x, y) {
-            const size = Math.random() * 5 + 3;
-            // Soft white/gold glow instead of bright pink
-            ctx.fillStyle = `hsla(${Math.random() * 40 + 20}, 30%, 90%, 0.7)`;
             ctx.beginPath();
-            ctx.save();
-            // Scatter petals around branch ends
-            ctx.translate(x + (Math.random()-0.5)*50, y + (Math.random()-0.5)*50);
-            ctx.arc(0, 0, size, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.restore();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.strokeStyle = '#3d2b2a'; // Brownish trunk
+            ctx.lineWidth = thickness;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+
+            // Growth effect speed
+            setTimeout(() => {
+                drawTree(x2, y2, angle - (Math.random() * 20 + 10), thickness * 0.7, len * 0.78);
+                drawTree(x2, y2, angle + (Math.random() * 20 + 10), thickness * 0.7, len * 0.78);
+            }, 150);
         }
 
-        window.addEventListener('resize', resize);
+        function drawBloom(x, y) {
+            for(let i=0; i<3; i++) {
+                setTimeout(() => {
+                    const r = Math.random() * 6 + 2;
+                    ctx.beginPath();
+                    ctx.arc(x + (Math.random()-0.5)*30, y + (Math.random()-0.5)*30, r, 0, Math.PI*2);
+                    ctx.fillStyle = `hsla(${Math.random() * 30 + 340}, 70%, 80%, 0.6)`; // Soft Pink/White
+                    ctx.fill();
+                }, Math.random() * 1500);
+            }
+        }
+
+        // --- Typewriter Logic ---
+        async function typeQuotes() {
+            for (let quote of quotes) {
+                let p = document.createElement('p');
+                container.appendChild(p);
+                for (let i = 0; i < quote.length; i++) {
+                    p.innerHTML += quote.charAt(i);
+                    await new Promise(r => setTimeout(r, 50));
+                }
+                await new Promise(r => setTimeout(r, 1800));
+                if (quote !== quotes[quotes.length -1]) p.style.opacity = '0.3';
+            }
+        }
     </script>
 </body>
 </html>
