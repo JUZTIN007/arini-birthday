@@ -9,7 +9,7 @@
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            background-color: #080808; color: #fff;
+            background-color: #050505; color: #fff;
             display: flex; justify-content: center; align-items: center;
             overflow: hidden; font-family: 'Quicksand', sans-serif;
         }
@@ -17,53 +17,67 @@
         #overlay {
             position: absolute; z-index: 100; text-align: center; cursor: pointer;
             width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;
-            background: #080808;
+            background: rgba(0,0,0,0.9);
         }
 
         #overlay h2 { 
             font-family: 'Playfair Display', serif; font-size: 1rem;
-            letter-spacing: 5px; color: #888; animation: pulse 2s infinite; 
+            letter-spacing: 5px; color: #aaa; animation: pulse 2s infinite; 
         }
 
         @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
-        #quote-container {
-            position: absolute; left: 50%; top: 20%; transform: translateX(-50%);
-            width: 85%; text-align: center; font-family: 'Playfair Display', serif;
-            font-size: 1.3rem; line-height: 1.6; font-style: italic; z-index: 10;
+        #main-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: none; /* Hidden until tap */
         }
 
-        canvas { position: absolute; bottom: 0; left: 0; pointer-events: none; }
-        p { margin-bottom: 12px; transition: opacity 1s; }
+        #quote-container {
+            position: absolute; left: 50%; top: 15%; transform: translateX(-50%);
+            width: 80%; text-align: center; font-family: 'Playfair Display', serif;
+            font-size: 1.4rem; line-height: 1.6; font-style: italic; z-index: 10;
+        }
+
+        #tree-canvas { position: absolute; bottom: 0; left: 0; pointer-events: none; z-index: 5; }
+        #fall-canvas { position: absolute; top: 0; left: 0; pointer-events: none; z-index: 1; }
+        
+        p { margin-bottom: 15px; transition: opacity 1.5s; }
     </style>
 </head>
 <body>
 
     <div id="overlay" onclick="startExperience()">
-        <h2>[ TAP TO BLOOM ]</h2>
+        <h2>[ TAP TO AWAKEN ]</h2>
     </div>
 
-    <div id="quote-container"></div>
-    <canvas id="canvas"></canvas>
+    <div id="main-container">
+        <div id="quote-container"></div>
+        <canvas id="tree-canvas"></canvas>
+        <canvas id="fall-canvas"></canvas>
+    </div>
 
     <script>
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
+        const tCanvas = document.getElementById('tree-canvas');
+        const tCtx = tCanvas.getContext('2d');
+        const fCanvas = document.getElementById('fall-canvas');
+        const fCtx = fCanvas.getContext('2d');
         const container = document.getElementById('quote-container');
 
         const quotes = [
-            "Hey you !!",
+            "Hey you...",
             "There is a certain light in your smile...",
             "A quiet kind of healing that makes the world feel right.",
             "Your presence has that same magic—calm and rare.",
-            "It’s strange how hours feel like seconds when we talk...",
-            "But then again, gems like you are once-in-a-lifetime.",
-            "Happy Birthday! Keep being your wonderful self. ✨"
+            "Hours feel like seconds when we talk...",
+            "Gems like you are once-in-a-lifetime.",
+            "Happy Birthday! Keep being your wonderful self. ❤️"
         ];
 
         function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            tCanvas.width = fCanvas.width = window.innerWidth;
+            tCanvas.height = fCanvas.height = window.innerHeight;
         }
 
         window.addEventListener('resize', resize);
@@ -71,13 +85,30 @@
 
         function startExperience() {
             document.getElementById('overlay').style.display = 'none';
-            drawTree(canvas.width / 2, canvas.height - 20, -90, 9, canvas.height * 0.2);
+            document.getElementById('main-container').style.display = 'block';
+            drawTree(tCanvas.width / 2, tCanvas.height - 20, -90, 10, tCanvas.height * 0.22);
             typeQuotes();
+            // Start falling particles after tree starts
+            setTimeout(startFalling, 2000);
+        }
+
+        // --- Custom Heart Drawing Function ---
+        function drawHeart(ctx, x, y, size, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            // Modified bezier curves for classic heart shape
+            ctx.bezierCurveTo(x, y - size / 2, x - size, y - size / 2, x - size, y);
+            ctx.bezierCurveTo(x - size, y + size / 2, x, y + size, x, y + size);
+            ctx.bezierCurveTo(x, y + size, x + size, y + size / 2, x + size, y);
+            ctx.bezierCurveTo(x + size, y - size / 2, x, y - size / 2, x, y);
+            ctx.closePath();
+            ctx.fill();
         }
 
         // --- Tree Growth Function ---
         function drawTree(x1, y1, angle, thickness, len) {
-            if (len < 8) {
+            if (len < 10) {
                 drawBloom(x1, y1);
                 return;
             }
@@ -85,31 +116,64 @@
             const x2 = x1 + Math.cos(angle * Math.PI / 180) * len;
             const y2 = y1 + Math.sin(angle * Math.PI / 180) * len;
 
-            ctx.beginPath();
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y2);
-            ctx.strokeStyle = '#3d2b2a'; // Brownish trunk
-            ctx.lineWidth = thickness;
-            ctx.lineCap = 'round';
-            ctx.stroke();
+            tCtx.beginPath();
+            tCtx.moveTo(x1, y1);
+            tCtx.lineTo(x2, y2);
+            tCtx.strokeStyle = '#2d1b1a'; // Dark wood
+            tCtx.lineWidth = thickness;
+            tCtx.lineCap = 'round';
+            tCtx.stroke();
 
-            // Growth effect speed
             setTimeout(() => {
                 drawTree(x2, y2, angle - (Math.random() * 20 + 10), thickness * 0.7, len * 0.78);
                 drawTree(x2, y2, angle + (Math.random() * 20 + 10), thickness * 0.7, len * 0.78);
-            }, 150);
+            }, 180);
         }
 
         function drawBloom(x, y) {
-            for(let i=0; i<3; i++) {
+            for(let i=0; i<4; i++) {
                 setTimeout(() => {
-                    const r = Math.random() * 6 + 2;
-                    ctx.beginPath();
-                    ctx.arc(x + (Math.random()-0.5)*30, y + (Math.random()-0.5)*30, r, 0, Math.PI*2);
-                    ctx.fillStyle = `hsla(${Math.random() * 30 + 340}, 70%, 80%, 0.6)`; // Soft Pink/White
-                    ctx.fill();
-                }, Math.random() * 1500);
+                    const size = Math.random() * 6 + 3;
+                    const hue = Math.random() < 0.3 ? 0 : 340; // mix of red and pink
+                    const color = `hsla(${hue + Math.random()*20}, 70%, 70%, 0.7)`;
+                    drawHeart(tCtx, x + (Math.random()-0.5)*40, y + (Math.random()-0.5)*40, size, color);
+                }, Math.random() * 2000);
             }
+        }
+
+        // --- Blossom Fall Logic ---
+        let particles = [];
+        function startFalling() {
+            // Create particles
+            for(let i=0; i < 60; i++) {
+                particles.push({
+                    x: Math.random() * fCanvas.width,
+                    y: Math.random() * fCanvas.height - fCanvas.height,
+                    size: Math.random() * 5 + 2,
+                    speed: Math.random() * 2 + 0.5,
+                    wind: Math.random() * 1 - 0.5,
+                    hue: Math.random() < 0.2 ? 0 : 345, // primarily pinks
+                });
+            }
+            animateFalling();
+        }
+
+        function animateFalling() {
+            fCtx.clearRect(0, 0, fCanvas.width, fCanvas.height);
+            for(let i=0; i < particles.length; i++) {
+                let p = particles[i];
+                p.y += p.speed;
+                p.x += p.wind;
+
+                // Reset particle to top if it goes off screen
+                if(p.y > fCanvas.height) {
+                    p.y = -p.size;
+                    p.x = Math.random() * fCanvas.width;
+                }
+
+                drawHeart(fCtx, p.x, p.y, p.size, `hsla(${p.hue + Math.random()*15}, 60%, 75%, 0.6)`);
+            }
+            requestAnimationFrame(animateFalling);
         }
 
         // --- Typewriter Logic ---
@@ -119,9 +183,9 @@
                 container.appendChild(p);
                 for (let i = 0; i < quote.length; i++) {
                     p.innerHTML += quote.charAt(i);
-                    await new Promise(r => setTimeout(r, 50));
+                    await new Promise(r => setTimeout(r, 60)); // typing speed
                 }
-                await new Promise(r => setTimeout(r, 1800));
+                await new Promise(r => setTimeout(r, 2200)); // pause between lines
                 if (quote !== quotes[quotes.length -1]) p.style.opacity = '0.3';
             }
         }
